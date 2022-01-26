@@ -70,6 +70,15 @@ func GetHash(targetRedis, key string) map[string]string {
 	}
 	return obj
 }
+func GetHashData(targetRedis, key, valueKey string) string {
+	conn := RedisPoolAlias[targetRedis].Get()
+	defer conn.Close()
+	data, err := redis.String(conn.Do("HGET", key, valueKey))
+	if err != nil {
+		fmt.Println(err)
+	}
+	return data
+}
 
 func ScanKeyList(targetRedis, key string) []string {
 	conn := RedisPoolAlias[targetRedis].Get()
